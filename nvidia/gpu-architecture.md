@@ -2,11 +2,16 @@
 ## Key features
 ### TF32를 갖춘 3rd Gen Tensor Core
 A100 3rd Gen Tensor Core는 연산 피연산 공유를 강화하고 효율성을 개선하며, 다음과 같은 강력한 새로운 데이터 유형을 추가하였다.
-* TF32 Tensor Core 명령: A100 GPU의 Tensor Core에서 실행되는 TF32는 전 세대(Volta GPU)의 FP32 연산보다 최대 10배 빠른 속도를 제공한다. Structural Sparsity와 결합하면 Volta 대비 최대 20배의 성능 향상을 얻을 수 있다.
-* IEEE 호환 FP64 Tensor Core 명령: HPC를 위한 기능이며, 이전 세대보다 HPC 애플리케이션의 연산 성능을 최대 2.5배 향상시켰다.
-* BF16 Tensor Core 명령: FP16과 동일한 처리량을 제공한다.
+* **TF32 Tensor Core 명령**
+  * A100 GPU의 Tensor Core에서 실행되는 TF32는 전 세대(Volta GPU)의 FP32 연산보다 최대 10배 빠른 속도를 제공한다.
+  * Structural Sparsity와 결합하면 Volta 대비 최대 20배의 성능 향상을 얻을 수 있다.
+* **IEEE 호환 FP64 Tensor Core 명령**
+  * HPC를 위한 기능이며, 이전 세대보다 HPC 애플리케이션의 연산 성능을 최대 2.5배 향상시켰다.
+* **BF16 Tensor Core 명령**
+  * FP16과 동일한 처리량을 제공한다.
 ### Multi-Instance GPU(MIG)
-* 단일 A100 GPU를 최대 7개의 개별 GPU로 분할할 수 있다. 이를 통해 다양한 크기의 작업에 필요한 연산 성능을 제공하여 최적의 활용률과 투자 수익을 극대화한다.
+* 단일 A100 GPU를 최대 7개의 개별 GPU로 분할할 수 있다.
+* 이를 통해 다양한 크기의 작업에 필요한 연산 성능을 제공하여 최적의 활용률과 투자 수익을 극대화한다.
 ### 3rd Gen NVLink
 * 서버에서 효율적인 성능 향상을 제공하기 위해 GPU 간의 고속 연결을 2배로 향상시킨다.
 ### Structural Sparsity
