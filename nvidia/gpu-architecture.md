@@ -13,7 +13,7 @@ Blackwell 아키텍처는 데이비드 H. 블랙웰(David H. Blackwell)의 업�
 * 업계 최초로 CPU에서 GPU로 확장된 TEE(Trusted Execution Environment)을 통해 민감한 데이터를 보호하고 AI 모델의 무결성을 보장한다.
 * Blackwell은 TEE I/O 기능을 갖춘 호스트와 함께 가장 성능이 뛰어난 Confidential Compuitng 솔루션을 제공하고, NVLink를 통한 인라인 보호를 제공한다. 
 ### 5세대 NVLink 및 NVLink 스위치
-* 5세대 NVLink는 NVLink 스위치 ASIC 및 이를 기반으로 구축된 스위치를 통해 **최대 576개의 GPU**를 연결하여 대규모 컴퓨팅 클러스터를 구축할 수 있습니다.
+* 5세대 NVLink는 NVLink 스위치 ASIC 및 이를 기반으로 구축된 스위치를 통해 **최대 576개의 GPU**를 연결하여 대규모 컴퓨팅 클러스터를 구축할 수 있다.
 * 5th Gen NVLink는 NVIDIA Hopper의 4th Gen NVLink 대비 성능을 2배 증가시켰다.
 * Blackwell GPU는 18개의 5세대 NVLink 링크를 내장하여 총 1.8TB/sec(방향당 900GB/sec)의 대역폭을 제공한다. (Link 당 50 GB/sec)
 * NVLink 스위치는 하나의 72개 GPU NVLink 도메인(NVL72)에서 130TB/sec의 GPU 대역폭을 제공한다. (1.8TB/sec*72=129.6TB/sec)
