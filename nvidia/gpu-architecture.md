@@ -22,6 +22,57 @@ A100 3rd Gen Tensor Core는 연산 피연산 공유를 강화하고 효율성을
 
 
 # Hopper Architecture
+## Key Features
+### 새로운 Streaming Multi-processor(SM)
+* **4th Gen Tensor Cores**
+  * 새로운 4th Gen Tensor Core는 A100 대비 칩 간 연산 속도가 최대 6배 빠르며, SM 단위 성능 향상, SM 수 증가, H100의 클럭 속도 증가 등을 포함한다.
+  * SM 단위 기준으로, Tensor Core는 동등한 데이터 타입에서 A100 대비 2배의 MMA 연산 속도를 제공하며 새로운 FP8 데이터 타입 사용 시 A100 대비 4배의 속도를 달성한다.
+  * Sparsity 기능은 딥러닝 네트워크의 세밀한 Structured Sparsity을 활용해 Tensor Corre 연산 성능을 2배 향상시킨다.
+* **DPX 명령어**
+  * 새로운 DPX 명령어는 A100 GPU 대비 동적 프로그래밍 알고리즘을 최대 7배 빠르게 가속한다.
+  * 예시로는 유전체 분석을 위한 Smith-Waterman 알고리즘, 동적 창고 환경에서 다수의 로봇 경로 최적화를 위한 Floyd-Warshall 알고리즘 등이 있다.
+* **3배 더 빠른 IEEE FP64 & FP32**
+  * IEEE FP64 및 FP32 연산 속도는 칩 간 기준 A100 대비 3배 빠르며, 이는 SM당 클럭당 성능이 2배 향상된 것과 추가된 SM 수 및 H100의 더 높은 클럭 속도 때문이다.
+* **새로운 쓰레드 블록 클러스터**
+  * 새로운 쓰레드 블록 클러스터 기능은 단일 SM 내의 쓰레드 블록보다 더 큰 수준의 지역성을 프로그래밍 방식으로 제어할 수 있게 해준다.
+  * 이는 CUDA 프로그래밍 모델에 ‘쓰레드’, ‘쓰레드 블록’, ‘쓰레드 블록 클러스터’, ‘그리드’라는 새로운 계층 구조를 추가한다.
+  * 클러스터는 여러 SM에 걸쳐 동시에 실행 중인 여러 쓰레드 블록이 동기화 및 협업적으로 데이터 접근과 교환을 할 수 있게 해준다.
+* **분산 공유 메모리**
+  * 분산 공유 메모리는 여러 SM의 공유 메모리 블록 간의 load, store, atomic 연산을 통한 직접 통신을 가능하게 한다.
+* **새로운 비동기 실행**
+  * 새로운 비동기 실행 기능에는 Tensor Memory Accelerator(TMA) 유닛이 포함되어 있으며, 이는 글로벌 메모리와 공유 메모리 간의 대규모 데이터 블록 전송을 효율적으로 처리한다.
+  * TMA는 클러스터 내 쓰레드 블록 간 비동기 복사도 지원합니다. 또한 원자적 데이터 이동 및 동기화를 위한 새로운 비동기 트랜잭션 배리어도 제공된다.
+### **Transformer 엔진**
+* 새로운 Transformer 엔진은 소프트웨어와 NVIDIA Hopper 전용 텐서 코어 기술을 결합해 트랜스포머 모델의 학습 및 추론을 가속화한다.
+* 이 엔진은 FP8과 16비트 연산 사이를 지능적으로 선택하고 각 계층에서 FP8과 16비트 간의 re-casting과 scaling을 자동으로 처리하여 A100 대비 최대 9배 빠른 AI 학습 속도, 최대 30배 빠른 AI 추론 속도를 제공한다.
+### **HBM3 메모리 서브시스템**
+* HBM3 메모리 서브시스템은 이전 세대 대비 거의 2배에 달하는 대역폭을 제공한다.
+* H100 SXM5 GPU는 세계 최초로 HBM3 메모리를 탑재한 GPU이며, 업계 최고 수준인 3TB/sec 메모리 대역폭을 지원한다.
+### **50MB L2 캐시 아키텍처**
+* 50MB L2 캐시 아키텍처는 모델과 데이터셋의 큰 부분을 캐시에 저장해 반복 접근 시 HBM3로의 왕복을 줄인다.
+### **2nd Gen MIG(Multi-Instance GPU)**
+* 2세대 MIG(Multi-Instance GPU) 기술은 A100 대비 GPU 인스턴스당 약 3배의 연산 성능과 거의 2배의 메모리 대역폭을 제공한다.
+* 이제 최초로 MIG 수준의 TEE(신뢰 실행 환경)를 포함한 Confidential Computing 기능도 제공한다.
+* 최대 7개의 독립적인 GPU 인스턴스를 지원하며, 각 인스턴스는 전용 NVDEC 및 NVJPG 유닛을 포함하고 NVIDIA 개발자 도구와 연동되는 자체 성능 모니터 세트를 갖는다.
+### **Confindential Computing**
+* 새로운 Confidential Computing 기능은 사용자 데이터를 보호하고 HW 및 SW 공격으로부터 방어하며, 가상화 및 MIG 환경에서 가상 머신(VM) 간 격리와 보호 기능을 향상시킨다.
+* H100은 세계 최초의 네이티브 Confidential Computing GPU를 구현하였으며, CPU와 함께 완전한 PCIe 속도로 TEE를 확장한다.
+### **4th Gen NVIDIA NVLink**
+* 4세대 NVIDIA NVLink는 all-reduce 연산에서 3배의 대역폭, 일반 대역폭은 이전 세대 NVLink 대비 50% 증가한다.
+* 다중 GPU 간 입출력에서 PCIe Gen 5 대비 7배 빠른 총 900GB/sec의 대역폭을 제공한다.
+### **3rd Gen NVSwitch**
+* 3세대 NVSwitch 기술은 서버, 클러스터, 데이터 센터 환경에서 여러 GPU를 연결하기 위해 노드 내부 및 외부에 스위치를 포함한다.
+* 노드 내부의 각 NVSwitch는 4세대 NVLink 링크를 위한 64개의 포트를 제공하여 다중 GPU 연결을 가속화한다.
+* 총 스위치 처리량은 이전 세대의 7.2 Tbit/sec에서 13.6 Tbit/sec로 증가했다.
+* 새로운 NVSwitch는 multicast 및 NVIDIA SHARP in-network reduction을 포함한 집합 연산을 하드웨어 가속한다.
+### **NVLink Switch System**
+* 새로운 NVLink 스위치 시스템 상호연결 기술과 3세대 NVSwitch 기반의 2단계 NVLink 스위치는 주소 공간의 격리와 보호 기능을 제공하여, 최대 32개 노드 또는 256개의 GPU를 2:1 테이퍼드 fat-tree 토폴로지로 연결할 수 있다.
+* 이 구성은 57.6TB/sec의 all-to-all 대역폭과 FP8 Sparse AI 연산에서 1 엑사플롭(exaFLOP)에 달하는 연산 성능을 제공한다.
+### **PCIe Gen 5**
+* PCIe Gen 5는 총 128GB/sec 대역폭(양방향 각각 64GB/sec)을 제공하며, 이는 Gen 4 PCIe의 총 64GB/sec(32GB/sec씩 양방향)보다 두 배이다.
+* PCIe Gen 5는 H100이 최고 성능의 x86 CPU, SmartNIC 또는 DPU와 인터페이스할 수 있도록 한다.
+### **Others**
+* 이외에도 강력한 확장성 향상, 지연 시간 및 오버헤드 감소, GPU 프로그래밍 간소화를 위한 다양한 기능이 추가되었다.
 
 # Blackwell Architecture
 ## Overview
