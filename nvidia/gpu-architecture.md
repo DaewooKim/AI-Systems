@@ -17,9 +17,51 @@ A100 3rd Gen Tensor Core는 연산 피연산 공유를 강화하고 효율성을
 ### Structural Sparsity
 * A100 Tensor Core의 새로운 Sparisty 지원은 딥러닝 네트워크의 미세한 Structured Sparsity을 활용하여 Tensor Core 연산처리량을 2배로 증가시킬 수 있다. 
 
-
 ## A100 GPU hardware architecture
+NVIDIA GA100 GPU는 Multiple GPU Processing Clusters(GPUs), Texture Processing Clusters(TPCs), Streaming Multiprocessors(SMs), HBM2 메모리 컨트롤러로 구성되어 있다.
+GA100 GPU는 128 SMs를 가지며, A100는 GA100를 기반으로 108 SMs를 가진다. 
+![image](https://developer-blogs.nvidia.com/wp-content/uploads/2021/guc/gaEfOQD6l3q8p4TzybT7gMVZc8YQkni-0-9ClI9Ei4epE4aHSLjg9-3ON8bkRFZxvm1G-nOCZ9CPy_zqw-EmBWje-sOiSem0oFWA4J7HnhdVdF5RUbrLB7n5-XGKDGznfh6R3xna.png)
 
+| 항목                           | GA100 (Full Implementation) | A100 (Actual Product)       |
+|:--------------------------------|-----------------------------------------:|-----------------------------------------:|
+| GPCs(GPU Processing Clusters)   | 8                            | 7                            |
+| TPCs(Texture Processing Clusters) per GPC                   | 8                            | 7 또는 8                     |
+| SMs per TPC                     | 2                            | 2                            |
+| SMs per GPC                     | 16                           | 최대 16                      |
+| 총 SM 수 (Total SMs)            | 128                          | 108                          |
+| FP32 CUDA 코어 per SM           | 64                           | 64                           |
+| 총 FP32 CUDA 코어 수            | 8192 (128×64)               | 6912 (108×64)               |
+| 3세대 Tensor 코어 per SM        | 4                            | 4                            |
+| 총 Tensor 코어 수               | 512 (128×4)                 | 432 (108×4)                 |
+| HBM2 메모리 스택 수             | 6                            | 5                            |
+| 메모리 컨트롤러 (512-bit)       | 12                           | 10                           |
+
+## A100 SM architecture
+A100의 SM(Stream Multiprocessor)은 Volta 및 Turing의 SM 설계를 기반으로 하여 성능이 크게 향상되었고, 새로운 기능들이 대폭 추가되었다.
+![image](https://developer-blogs.nvidia.com/wp-content/uploads/2021/guc/raD52-V3yZtQ3WzOE0Cvzvt8icgGHKXPpN2PS_5MMyZLJrVxgMtLN4r2S2kp5jYI9zrA2e0Y8vAfpZia669pbIog2U9ZKdJmQ8oSBjof6gc4IrhmorT2Rr-YopMlOf1aoU3tbn5Q.png)
+
+### Tensor Core 성능 개선
+* A100의 3세대 Tensor Core는 FP16/FP32 혼합 정밀도 FMA 연산을 클럭당 256회 수행하며, SM당 총 4개가 탑재되어 있어 SM 하나에서 클럭당 1024 연산이 가능하다. (Volta/Turing 대비 2배).
+* 다양한 데이터 타입(FP16, BF16, TF32, FP64, INT8, INT4, Binary)을 지원하며, sparsity 기능을 통해 연산 성능을 2배까지 향상시켰다.
+### 성능 비교 (V100 대비)
+* FP16: 2.5 배 (sparsity 활용 시, 5배)
+* FP64: 2.5 배  
+* INT8: 10 배 (sparsity 활용 시, 20배)
+* TF32: FP32 대비 10 배 (sparsity 활용 시, 20배) 
+![image](https://developer-blogs.nvidia.com/wp-content/uploads/2020/05/Sparse-Tensor-Core-Quad-White-1024x576.png)
+### TF(TensorFloat-32) 도입
+* TF32(TensorFloat-32)는 FP32와 동일한 **범위(8비트 지수)**를 가지면서, **FP16과 같은 정밀도(10비트 가수)**를 제공한다.
+* A100은 TF32를 통해 FP32 입력/출력을 유지하면서도 Tensor 연산을 가속할 수 있으며, 기존 DL/HPC 프레임워크에 손쉽게 통합 가능하다.
+* 사용자는 기존 FP32 학습 코드를 변경하지 않고도 자동으로 가속 가능하다.
+* TF32는 내부 연산에서 FP32보다 낮은 정밀도를 사용하나, 출력은 IEEE 표준 FP32로 제공한다.
+![image](https://developer.nvidia.com/blog/wp-content/uploads/2020/05/TensorFloat32-TF32.jpg)
+### 메모리 및 캐시
+* 공유 메모리 + L1 캐시 통합 용량: 192KB, V100 대비 1.5배
+* 비동기 복사 명령어: 글로벌 메모리에서 공유 메모리로 직접 로딩 (L1 캐시 우회 가능)
+* 비동기 barrier 유닛: 비동기 복사 명령어와 함께 사용
+* L2 캐시 관리 및 상주 제어를 위한 새로운 명령어
+* CUDA Cooperative Groups를 위한 warp-level reduction 명령어 추가
+* 소프트웨어 복잡도를 줄이기 위한 다양한 프로그래밍 개선
 
 # Hopper Architecture
 ## Key Features
