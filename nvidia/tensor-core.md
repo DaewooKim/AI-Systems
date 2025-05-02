@@ -29,9 +29,10 @@
 ## 전력 최적화
 * 클럭 게이팅(clock gating)을 적극 활용하여 전력 효율성을 높인다.
 
+# 
 
 # Tensor Core Precsions vs CUDA Core Precsions
-| | Volta (Tensor Core) | Ampere Tensor Core) | Hopper (Tensor Core) | Blackwell (Tensor Core) | Volta (CUDA)| Ampere (CUDA) | Hopper (CUDA) | Blackwell (CUDA) |
+| | Volta (Tensor Core) | Ampere (3rd Tensor Core) | Hopper (4th Tensor Core) | Blackwell (Tensor Core) | Volta (CUDA)| Ampere (CUDA) | Hopper (CUDA) | Blackwell (CUDA) |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | FP4  |❌|❌|❌|✅|❌|❌|❌|❌|
 | FP6  |❌|❌|❌|✅|❌|❌|❌|❌|
@@ -42,6 +43,9 @@
 | TF32 |❌| | ✅ | ✅ | | | | |
 | FP32 |✅| |  |  | | | ✅ | ✅ |
 | FP64 |❌| | ✅ | ✅ | | | ✅ | ✅ |
+
+# Reference
+1. [NVIDIA Ampere Architecture In-Depth](https://developer.nvidia.com/blog/nvidia-ampere-architecture-in-depth/)
 
 
 
