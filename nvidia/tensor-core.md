@@ -13,7 +13,7 @@
 ![image](https://developer-blogs.nvidia.com/wp-content/uploads/2017/05/image4-625x155.png)
 
 * 각 Tensor Core는 **클럭당 64개의 혼합정밀도 (FP16 입력 곱셈 + FP32 누산) floating point FMA 연산**을 수행할 수 있다.
-* FP16 곱셈 결과는 **Full Precsion**의 결과로 계산되며, 이 결과는 동일한 **Dot Product** 내의 다른 항들과 함께 FP32로 누산된다. **(4x4x4 행렬 곱셈 연산)**
+* FP16 곱셈 결과는 **Full Precsion**의 결과로 계산되며, 이 결과는 동일한 **Dot Product** 내의 다른 항들과 함께 FP32로 누산된다. 
 ![image](https://developer-blogs.nvidia.com/wp-content/uploads/2017/05/image11.png)
 
 ## 성능 향상
@@ -28,4 +28,21 @@
 
 ## 전력 최적화
 * 클럭 게이팅(clock gating)을 적극 활용하여 전력 효율성을 높인다.
+
+
+# Tensor Core Precsions vs CUDA Core Precsions
+| | Volta (Tensor Core) | Ampere Tensor Core) | Hopper (Tensor Core) | Blackwell (Tensor Core) | Volta (CUDA)| Ampere (CUDA) | Hopper (CUDA) | Blackwell (CUDA) |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| FP4  |❌|❌|❌|✅|❌|❌|❌|❌|
+| FP6  |❌|❌|❌|✅|❌|❌|❌|❌|
+| FP8  |❌| | ✅ | ✅ | | | | |
+| INT8 |❌| | ✅ | ✅ | | | ✅ | |
+| FP16 |✅| | ✅ | ✅ | | | ✅ | ✅ |
+| BF16 |❌| | ✅ | ✅ | | | ✅ | ✅ |
+| TF32 |❌| | ✅ | ✅ | | | | |
+| FP32 |✅| |  |  | | | ✅ | ✅ |
+| FP64 |❌| | ✅ | ✅ | | | ✅ | ✅ |
+
+
+
 
