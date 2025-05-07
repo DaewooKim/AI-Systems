@@ -1,5 +1,14 @@
 # Hopper (2022)
 ## GH200 NVL32
+### Overview
+NVIDIA GH200 NVL32는 하이퍼스케일 데이터센터를 대상으로 NVLink를 통해 연결된 **NVIDIA GH200 Grace Hopper 슈퍼칩**을 위한 랙 스케일 레퍼런스 디자인이다.
+NVIDIA GH200 NVL32는 NVIDIA MGX 섀시(chassis) 디자인과 호환되는 16개의 듀얼 NVIDIA Grace Hopper 서버 노드를 지원하며, 수냉식 냉각을 통해 컴퓨팅 밀도와 효율성을 극대화할 수 있다.
+* 16x Dual GH200 Compute Trays
+* 9x NVLink Switch Trays
+![image](https://developer-blogs.nvidia.com/wp-content/uploads/2023/11/nvidia-gh200-nvl32-diagram-front-back_-1536x1166.png)
+
+### NVIDIA GH200 NVL2
+
 
 
 # Blackwell (2024)
@@ -45,6 +54,7 @@
 
 # Reference
 * [LLM, 추천 시스템 및 GNN을 위한 하나의 거대한 슈퍼칩: NVIDIA GH200 NVL32](https://developer.nvidia.com/ko-kr/blog/one-giant-superchip-for-llms-recommenders-and-gnns-introducing-nvidia-gh200-nvl32/)
+* 
 
 
 
