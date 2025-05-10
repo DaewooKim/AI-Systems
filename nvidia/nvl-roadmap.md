@@ -56,8 +56,10 @@ NVIDIA GH200 NVL2는 단일 노드에서 NVLink C2C 기술을 통해 두 개의 
   - 각 Grace Hopper 슈퍼칩은 최대 480GB의 LPDDR5X와 144GB의 HBM3e를 제공, 총 1248GB의 메모리를 지원. 이는 HBM만 사용하는 시스템에 비해 훨씬 더 많은 메모리를 접근할 수 있게 함
   - GPU가 CPU 메모리에 접근함으로써 메모리 복사의 필요성이 더욱 줄어듬
 - **Accelerated Bulk Transfers**
-  - NVIDIA Hopper DMA는 NVLink-C2C와 지원하여 페이지 가능 메모리의 대량 전송을 가속화
+  - NVIDIA Hopper DMA는 NVLink-C2C의 지원을 받아 Host와 Device 간의 Pageable 메모리의 대량 전송을 가속화
   - DMA는 호스트와 디바이스 간의 메모리 복사 오버헤드를 줄여주는 기술로, 시스템 내 메모리 이동을 효율적으로 처리
+  - 복사를 수행하는 일반적인 discrete 메모리 시스템과 GH200을 비교하며 메모리 복사 및 이동의 차이는 다음과 같음
+   ![image](https://developer-blogs.nvidia.com/wp-content/uploads/2025/02/diagram-discrete-memory-system-1536x864.png)
 
 # Blackwell (2024)
 ## GB200 NVL72
