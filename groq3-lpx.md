@@ -28,3 +28,13 @@
 - 이 구조에서는 latency가 단계마다 누적되기 때문에, 단순 평균 처리량보다 stable per-token performance와 tail-latency behavior가 매우 중요해짐
 
 ![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/Heterogenous-AI.gif)
+
+## Vera Rubin NVL72 & LPX의 역할 분담
+
+### Vera Rubin NVL72
+- Prefill, Decode Attention, Long-context 처리, High Concurrency Serving을 담당
+
+### LPX
+- Decode 내부의 Latency-sensitive Execution Path 가속. 특히 FFN과 MoE Expert Execution 같은 구간
+
+![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/LPX05-Rubin_GPU_and_Groq_3_LPU.webp)
