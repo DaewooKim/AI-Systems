@@ -108,7 +108,13 @@
   - VXM (Vector execution modules): pointwise arithmetic, type conversion, activation function 처리
   - SXM (Switch execution modules): permutation, rotation, distribution, transposition 같은 structured data movement 수행
 
-### 
+### MEM은 극도의 On-chip Memory 대역폭을 가능하게 함
+
+- MEM 블록은 SRAM 우선의 평면 메모리 아키텍처로, 500MB의 고속 온칩 SRAM이 추론을 위한 주요 작업 저장소 역할
+- 컴파일러와 런타임은 하드웨어 관리 캐시에 의존하는 대신 가중치, 활성화 값, Key-Value 상태를 포함한 활성 작업 세트를 On-Chip 메모리에 배치하고 데이터를 명시적으로 이동
+- 예측 블가능한 stall을 줄이고, latency-sensitive data를 compute 가까이에 유지해 low, stable latency를 가능하게 함
+- 성능의 본질은 Peak arithmetic throughput보다 compute를 얼마 지속적으로 feed할 수 있느냐에 가까움
+- 그래서 각 LPU는 150 TB/s의 on-chip memory bandwidth를 갖고, 여기에 고대역 C2C 통신을 결합
 
 ## NVIDIA Dynamo의 역할
 
