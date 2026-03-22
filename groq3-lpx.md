@@ -51,6 +51,10 @@
 ![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/Decode-Loop-1536x792.png)
 
 ### LPX를 활용한 Speculative Decoding
+- LPX의 역할을 AFD(Attention-FFN Disaggregation)에만 한정하지 않음
+- Speculative Decoding의 Draft Generation Engine으로도 적합
+- LPX: 저지연 아키텍처를 사용하여 Draft 토큰을 신속하게 생성
+- Rubin GPU: 높은 처리량의 컴퓨팅 성능과 대용량 메모리를 활용하여 토큰을 효율적으로 검증하고 확정
 
 
 ## LPX의 기본 Specs
@@ -67,6 +71,27 @@
   - Scale-up density: 256 chips
   - Scale-up bandwidth: 640 TB/s
  
-### 
+### LPX Compute Tray 
 
-### 
+- LPX rack-scale accelerator는 32개의 Liquid-cooled 1U Compute Tray로 구성
+  - 8개의 LPU accelerators
+  - Host processor
+  - Fabric expansion Logic
+  - BlueField-4 DPU
+
+- Specs
+  - LP30 chips: 8
+  - On-chip SRAM: 4 GB
+  - SRAM bandwidth: 1.2 PB/s
+  - DRAM via fabric expansion logic: up to 256 GB
+  - DRAM via host CPU: up to 128 GB
+  - AI inference compute (FP8): 9.6 PFLOPS
+  - Scale-up bandwidth: 20 TB/s
+
+## NVIDIA Dynamo의 역할
+
+- 이기종 백엔드 전반에 걸쳐 분산된 서비슬 제공 및 분산된 디코딩을 조정하기 위한 오케스트레이션
+- 
+
+
+![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/LPX07-NVIDIA_Dynamo_Orchestrates_Disagg_Compute-1536x1215.jpeg)
