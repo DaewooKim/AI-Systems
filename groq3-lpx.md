@@ -38,3 +38,35 @@
 - Decode 내부의 Latency-sensitive Execution Path 가속. 특히 FFN과 MoE Expert Execution 같은 구간
 
 ![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/LPX05-Rubin_GPU_and_Groq_3_LPU.webp)
+
+### Decode 단계
+
+- Attention-FFN Disaggregation
+  - 디코딩 내에서 Attention과 FFN을 분리하고 각 토큰에 대한 중간 Activation을 교환하여 각 엔진이 가장 적합한 루프 부분을 실행
+  - GPU: 누적된 KV 캐시를 활용해 전체 컨텍스트 어텐션과 같이 처리량과 대용량 메모리가 가장 중요한 디코딩 작업을 처리
+  - LPX: Sparse MoE expert FFN과 다른 pointwise operation과 같은 Latency-sensitive execution을 가속 
+
+- Rack 규모 이상에서 LPX는 긴밀하게 조정된 컴퓨팅 단위로 작동하도록 설계되어 조정 오버헤드를 최소화하고 Jitter를 줄임
+
+![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/Decode-Loop-1536x792.png)
+
+### LPX를 활용한 Speculative Decoding
+
+
+## LPX의 기본 Specs
+
+### LPX Rack-scale System
+
+- LPX 시스템은 256개의 상호 연결된 NVIDIA Groq 3 LPU accerators를 중심으로 구성됨
+- Rubin과 LPX를 결합하면 up to 35x higher inference throughput per megawatt를 제공
+
+- Specs
+  - AI inference compute: 315 PFLOPS
+  - Total SRAM capacity: 128 GB
+  - On-chip SRAM bandwidth: 40 PB/s
+  - Scale-up density: 256 chips
+  - Scale-up bandwidth: 640 TB/s
+ 
+### 
+
+### 
