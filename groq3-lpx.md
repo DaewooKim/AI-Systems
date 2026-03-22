@@ -56,7 +56,6 @@
 - LPX: 저지연 아키텍처를 사용하여 Draft 토큰을 신속하게 생성
 - Rubin GPU: 높은 처리량의 컴퓨팅 성능과 대용량 메모리를 활용하여 토큰을 효율적으로 검증하고 확정
 
-
 ## LPX의 기본 Specs
 
 ### LPX Rack-scale System
@@ -73,6 +72,8 @@
  
 ### LPX Compute Tray 
 
+![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/LPX02-Groq3LPX_Compute_Tray-1536x850.jpeg)
+
 - LPX rack-scale accelerator는 32개의 Liquid-cooled 1U Compute Tray로 구성
   - 8개의 LPU accelerators
   - Host processor
@@ -87,11 +88,33 @@
   - DRAM via host CPU: up to 128 GB
   - AI inference compute (FP8): 9.6 PFLOPS
   - Scale-up bandwidth: 20 TB/s
+ 
+## NVIDIA Groq 3 LPU의 아키텍처
+
+- LPX의 핵심 칩은 NVIDIA Groq 3 LPU임
+- LPU는 컴파일러 제어 하에 연산, 메모리, 통신을 긴밀하게 결합하여 빠르고 예측 가능한 토큰 생성을 제공하도록 설계됨
+- 이 칩은 peak arithmetic throughput 하나만 최적화한 것이 아니라, deterministic execution, high on-chip memory bandwidth, explicit data movement를 핵심 설계 원리로 둠
+  
+![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/Groq-3-Architecture-1536x831.png)
+
+### 텐서 우선 연산 및 명시적 데이터 이동
+
+- LPU의 compute와 communication은 320-byte vectors를 작업 단위로 구성
+- Arithmetic Operations, Memory Access, Inter-device Transfer가 모두 이 고정 크기 vector를 중심으로 동작
+- 이렇게 하여 scheduling, synchronization을 단순화함
+
+- LPU 내부에 특화된 3가지 Execution Module
+  - MXM (Matrix execution modules): dense multiply-accumulate를 담당하는 tensor operation용 블록
+  - VXM (Vector execution modules): pointwise arithmetic, type conversion, activation function 처리
+  - SXM (Switch execution modules): permutation, rotation, distribution, transposition 같은 structured data movement 수행
+
+### 
 
 ## NVIDIA Dynamo의 역할
 
-- 이기종 백엔드 전반에 걸쳐 분산된 서비슬 제공 및 분산된 디코딩을 조정하기 위한 오케스트레이션
-- 
-
+- 이기종 백엔드 전반에 걸쳐 분산된 서비스 제공 및 분산된 디코딩을 조정하기 위한 오케스트레이션
+- Dynamo는 Prefill 작업을 GPU 워커로 라우팅하여 대규모 컨텍스트를 처리하고 KV 캐시를 구축
+- 디코딩 과정에서 Dynamo는 AFD 루프를 오케스트레이션하는데, 이 루프에서 GPU는 누적된 KV 캐시에 대한 어텐션을 실행하고, 중간 활성화는 FFN/MoE 실행을 위해 LPU로 전달함
+- 출력은 토큰 생성을 계속하기 위해 GPU로 다시 전달
 
 ![](https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/LPX07-NVIDIA_Dynamo_Orchestrates_Disagg_Compute-1536x1215.jpeg)
